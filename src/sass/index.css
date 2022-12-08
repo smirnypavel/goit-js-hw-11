@@ -78,4 +78,12 @@
 
 .info-item {
   text-decoration: none;
+}
+
+.search-form {
+  background-color: aqua;
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }/*# sourceMappingURL=index.css.map */
