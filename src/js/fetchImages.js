@@ -7,7 +7,7 @@ export const perPage = 40;
 
 export async function fetchImages(searchValue) {
     const searchParams = new URLSearchParams ({
-        key: '30163635-d3ce08ab8a7984e551514dc56',
+        key: '31868905-6d4cb3c5703ea270b013ab0a6',
         q: searchValue,
         image_type: 'photo',
         orientation: 'horizontal',
