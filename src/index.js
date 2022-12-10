@@ -1,70 +1,106 @@
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
-import { fetchForm } from './js/fetch'
-import {createMarkup} from './js/markap'
-
-const gallery = document.querySelector('.gallery');
-const form = document.querySelector('.search-form');
-const guard = document.querySelector('.js_guard');
-const options = {
-    root: null,
-    rootMargin: '200px',
-    threshold: 1.0
-}
-const observer = new IntersectionObserver(onLoad, options);
-let page =1;
-
-function onLoad(entries, observer){
-    entries.forEach(element => {
-        page+=1;
-        if(element.isIntersecting){
-            console.log('БАЧУ');
-            fetchForm(page).then(data =>
-                gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits))
-                )
-        }
-    });
-    console.log(entries);
-}
-
-form.addEventListener('submit', searchOn);
-
-function searchOn(evt){
-    evt.preventDefault()
-    // console.dir(evt.currentTarget);
-    const {searchQuery : {value }} = evt.currentTarget.elements;
-    // console.log(value);
-    if(!value){
-        clearMarkAp();
-        Notiflix.Notify.failure('Please, enter a search term!!!');
-        return
-    }
-    fetchForm(value).then(data => {
-            console.log(data);
-            Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
-            clearMarkAp();
-            gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits))
-            observer.observe(guard)
-        });
-}
+import { createImage } from './js/createImage'
+import { fetchImages, page, perPage, resetPage } from './js/fetchImages';
+import { onTop, onScroll } from './js/buttonUp';
 
 
-// searchOn()
+const form = document.querySelector("#search-form");
+const input = document.querySelector(".search-input");
+const gallery = document.querySelector(".gallery");
+const loadButton = document.querySelector(".load-more");
 
 
-// fetchForm().then(data => {
-//     console.log(data.hits);
-//     gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits))
-// });
-// fetchForm()
+// const API_KEY = '30163635-d3ce08ab8a7984e551514dc56';
 
-// let lightbox = new SimpleLightbox('.gallery a', {
-//     captionsData: `alt`,
-//     captionDelay: 250,
-//     fadeSpeed: 100,
-// });
 
-function clearMarkAp(){
+form.addEventListener('submit', onSubmit);
+loadButton.addEventListener('click', onNextPage)
+
+let searchValue = '';
+
+const optionsSL = {
+    overlayOpacity: 0.5,
+    captionsData: "alt",
+    captionDelay: 250,
+};
+let simpleLightbox;
+
+onScroll();
+onTop();
+
+
+async function onSubmit(event) {
+    event.preventDefault();
+    searchValue = input.value.trim();
+    if (searchValue === '') {
+        clearAll();
+        buttonHidden();
+        Notiflix.Notify.info('You cannot search by empty field, try again.');
+        return;
+    } else {
+        try {
+            resetPage();
+            const result = await fetchImages(searchValue);
+            if (result.hits < 1) {
+                form.reset();
+                clearAll();
+                buttonHidden();
+                Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            } else {
+                form.reset();
+                gallery.innerHTML = createImage(result.hits);
+                simpleLightbox = new SimpleLightbox(".gallery a", optionsSL).refresh();
+                buttonUnHidden();
+                
+                Notiflix.Notify.success(`Hooray! We found ${result.totalHits} images.`);
+            };
+        } catch (error) {
+            ifError();
+        };
+    };
+};
+async function onNextPage() {
+    simpleLightbox.destroy();
+    try {
+        const result = await fetchImages(searchValue);
+        const totalPages = page * perPage;
+            if (result.totalHits <= totalPages) {
+                buttonHidden();
+                Notiflix.Report.info('Wow', "We're sorry, but you've reached the end of search results.", 'Okay');
+            }
+        gallery.insertAdjacentHTML('beforeend', createImage(result.hits));
+        smoothScroll();
+        simpleLightbox = new SimpleLightbox(".gallery a", optionsSL).refresh();
+    } catch (error) {
+        ifError();
+    };
+};
+
+function ifError() {
+    clearAll();
+    buttonHidden();
+    Notiflix.Report.info('Oh', 'Something get wrong, please try again', 'Okay');
+};
+
+function clearAll() {
     gallery.innerHTML = '';
-}
+};
+
+function buttonHidden() {
+    loadButton.classList.add("visually-hidden");
+};
+
+function buttonUnHidden() {
+    loadButton.classList.remove("visually-hidden");
+};
+
+function smoothScroll() {
+    const { height: cardHeight } =
+        document.querySelector(".photo-card").firstElementChild.getBoundingClientRect();
+    window.scrollBy({
+    top: cardHeight * 3.9,
+    behavior: "smooth",
+});
+};

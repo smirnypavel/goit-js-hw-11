@@ -1,2 +1,190 @@
-@import './common';
-@import './example';
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    // background-image: url('../images/1641133261_2-abrakadabra-fun-p-fon-dlya-prezentatsii-minimalizm-svetlii-2.png'); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    // background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-attachment: fixed;
+    height: 100vh;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.container {
+    margin: 0 auto;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.search-navigation {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.search-block {
+    width: 100%;
+    // z-index: 1;
+    margin: 0;
+    padding: 0;
+    // position: fixed;
+    box-shadow: 1px 1px 2px rgb(52, 60, 62);
+    // background-image: url('../images/1626178904_58-kartinkin-com-p-fon-rozovii-gradient-krasivo-63.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.search-input {
+    padding: 15px;
+    border: none;
+    font-size: 20px;
+    margin-right: 20px;
+    width: 300px;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 2px 1px 2px rgb(52, 60, 62);
+}
+.search-input:focus {
+    border: none;
+    outline: none;
+}
+.search-button {
+    display: inline-flex;
+    padding: 15px 30px 15px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: white;
+    box-shadow: 2px 1px 2px rgb(52, 60, 62);
+}
+.search-icon {
+    width: 25px;
+    margin-left: 15px;
+}
+.search-button:hover {
+    scale: 1.02;
+    background-color:rgba(121, 191, 156, 0.158);
+}
+.load-more {
+    font-size: 25px;
+    padding: 20px;
+    color: black;
+    background-clip: padding-box;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    display: block;
+    background-color:rgba(121, 191, 156, 0.158);
+    border: none;
+    border-radius: 6px;
+    transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    ;
+
+    &:hover {
+        box-shadow: 2px 2px 5px #b097b2;
+    }
+
+    &.is-hidden {
+        display: none;
+    }
+}
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    
+}
+.main-block {
+    
+    padding-top: 20px;
+    padding-bottom: 50px;
+}
+.on-top {
+    position: fixed;
+    font-size: 25px;
+    bottom: 3vh;
+    right: 2vw;
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    background-color:rgba(121, 191, 156, 0.158);
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.on-top:hover {
+    background-color:#2a92d0;
+    
+}
+.btn-to-top--visible {
+    opacity: 1;
+    visibility: visible;
+}
+.visually-hidden {
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    margin: -1px;
+}
+
+.photo-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12), 0px 4px 4px rgba(0, 0, 0, 0.06), 1px 4px 6px rgba(0, 0, 0, 0.16);
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.photo-card:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+.gallery-image {
+    display: block;
+    flex-grow: 1;
+    object-fit: cover;
+    width: 320px;
+    height: 213px;
+}
+.gallery-image:hover {
+    cursor: zoom-in;
+}
+.info {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.info-item {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    line-height: calc(22 / 18);
+    transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.bx-search-alt{
+    margin-left: 10px;
+}
+.bx-fade-up{
+    margin-top: 20px;
+}
+.bxs-hand-down{
+    margin-left: 10px; 
+}
